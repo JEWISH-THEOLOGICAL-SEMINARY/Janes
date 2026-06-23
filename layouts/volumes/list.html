@@ -1,0 +1,167 @@
+{{ define "title" }} 
+  {{ $vName := .Title }} 
+  {{ $iName := .Params.issue }} 
+  {{ $y := .Params.year }} 
+
+  {{ if and .Parent .Parent.Params.year }} 
+    {{ $vName = .Parent.Title }}
+    {{ $iName = .Title }}
+    {{ $y = .Parent.Params.year }} 
+  {{ end }} 
+  {{ if and $vName (ne $vName "Volumes") }}
+    {{ $vNum := replace $vName "Volume " "" }} 
+    {{ if $iName }} 
+      Vol. {{ $vNum }}, 
+      {{ $iName }}, 
+      {{ $y }} | Published by {{ .Site.Title }} 
+    {{ else }} 
+      Vol. {{ $vNum }}, 
+      {{$y }} | Published by {{ .Site.Title }} 
+    {{ end }} 
+  {{ else }} 
+    Volumes | {{ .Site.Title }} 
+  {{ end }} 
+{{ end }} 
+
+{{ define "hero" }} 
+  {{ $volumeName := .Title }} 
+  {{ $issueName := .Params.issue }} 
+  {{ $year := .Params.year }} 
+  
+  {{ if and .Parent .Parent.Params.year }} 
+    {{ $volumeName = .Parent.Title }} 
+    {{ $issueName = .Title}} 
+    {{ $year = .Params.year }} 
+  {{ end }} 
+  
+  {{ $heroTitle := "Volumes & Issues" }} 
+  {{ $subText := "Journal of the Ancient Near Eastern Society" }} 
+  
+  {{ if and $volumeName (ne $volumeName "Volumes") }} 
+    {{ $heroTitle = printf "JANES %s" $volumeName }} 
+    {{ $volNum := replace $volumeName "Volume " "" }} 
+    {{ if $issueName }} 
+      {{ $subText = printf "Vol. %s, %s, %v" $volNum $issueName $year }}
+    {{ else }} 
+      {{ $subText = printf "Vol. %s, %v" $volNum $year }} 
+    {{ end }} 
+  {{ end }} 
+
+  {{ $bgImage := .Params.hero_image | default ("/images/clay_tablet_hero.png" | absURL) }}
+
+  <header
+    class="article-hero"
+    style="background-image: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.85)), url('{{ $bgImage }}');"
+  >
+    <div class="container hero-content-inner">
+      <h1>{{ $heroTitle }}</h1>
+      <p class="author" style="margin-top: 5px">{{ $subText }}</p>
+    </div>
+  </header>
+{{ end}}
+
+{{ define "main" }}
+  <div class="list-page">
+    {{/* ── Issue page: submission guidelines + article list ── */}} 
+    {{ if and .Parent .Parent.Params.year }}
+      <div class="submission-guidelines">
+        <p>
+          The Journal of the Ancient Near Eastern Society welcomes articles on all
+          aspects of the ancient Near East. Manuscripts, which must be typed
+          double-spaced in MS Word according to Journal style, and all illustrations
+          should be submitted electronically, together with a PDF version, to the
+          Editor (<a href="mailto:sholtz@yu.edu">sholtz@yu.edu</a>). Style
+          guidelines may be obtained on request.
+        </p>
+      </div>
+    {{ end }} 
+    
+    {{ .Content }}
+
+    <div class="toc-list">
+    {{/* ── Articles (shown when on an issue page) ── */}} 
+      {{ range .RegularPages }}
+      <article class="toc-item">
+        <h4 class="article-title">
+          <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+        </h4>
+        <p class="article-author">{{ .Params.author }}</p>
+        <div class="article-meta-tags">
+          {{ range .Params.tags }}<span class="tag">{{ . }}</span>{{ end }}
+        </div>
+      </article>
+      {{ end }} 
+    {{/* ── Volumes or Issues (shown on /volumes/ or a volume page) ── */}} 
+    {{ range .Sections }} 
+      {{ if .Sections }} 
+        {{/* Volume with nested issues*/}}
+        <div class="volume-group">
+          <div class="volume-group-header">
+            <h2 class="volume-group-title">JANES {{ .Title }}</h2>
+            {{ if .Params.year }}
+              <span class="volume-group-year">
+                {{ .Params.year }}
+              </span>
+            {{ end }}
+          </div>
+          <div class="issue-list">
+            {{ range .Sections }}
+              <a href="{{ .RelPermalink }}" class="issue-card">
+                <div class="issue-card-body">
+                  <h3 class="issue-card-title">{{ .Title }}</h3>
+                  {{ with .Summary }}
+                    <p class="issue-card-desc">{{ . }}</p>
+                  {{ end }}
+                </div>
+                <span class="issue-card-cta">
+                  Browse contents
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 14 14"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <line x1="2" y1="7" x2="12" y2="7" />
+                    <polyline points="8,3 12,7 8,11" />
+                  </svg>
+                </span>
+              </a>
+            {{ end }}
+          </div>
+        </div>
+      {{ else }} 
+      {{/* Single issue (on a volume page with no nested sections) */}}
+        <a href="{{ .RelPermalink }}" class="issue-card">
+          <div class="issue-card-body">
+            <h3 class="issue-card-title">{{ .Title }}</h3>
+            {{ with .Summary }}
+            <p class="issue-card-desc">{{ . }}</p>
+            {{ end }}
+          </div>
+          <span class="issue-card-cta">
+            Browse contents
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 14 14"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <line x1="2" y1="7" x2="12" y2="7" />
+              <polyline points="8,3 12,7 8,11" />
+            </svg>
+          </span>
+        </a>
+      {{ end }} {{ end }}
+  </div>
+</div>
+{{ end }}

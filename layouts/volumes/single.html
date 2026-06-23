@@ -1,0 +1,611 @@
+{{ define "hero" }}
+<header
+    class="article-hero"
+    {{ if .Params.hero_image }}
+        style="background-image: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.85)), url('{{ .Params.hero_image | absURL }}');"
+    {{ end }}
+> 
+    <div class="container hero-content-inner">
+        <h1>{{ .Title }}</h1>
+        <p class="author">{{ .Params.author }}</p>
+        <p class="meta">
+            {{ if .Params.views }}<span>Views: {{ .Params.views }} | </span>{{
+            end }} {{ if .Params.downloads }}<span
+                >Downloads: {{ .Params.downloads }}</span
+            >{{ end }}
+            <br />
+            <span class="issn">ISSN: {{ .Site.Params.issn }}</span>
+        </p>
+        <div class="tags" style="margin-top: 15px">
+            {{ range .Params.tags }}<span class="tag hero-tag">{{ . }}</span>{{
+            end }}
+        </div>
+    </div>
+</header>
+{{ end }} 
+{{ define "main" }}
+<div class="article-detail">
+    <div class="article-body">{{ .Content }}</div>
+
+    {{ if .Params.pdf_url }}
+    <div class="pdf-section">
+        <div id="pdf-viewer" class="pdf-viewer">
+            <div class="pdf-toolbar">
+                <!-- Zoom -->
+                <div class="pdf-tb-group">
+                    <button
+                        id="zoom-out"
+                        class="pdf-tb-btn pdf-tb-btn--icon"
+                        title="Zoom out"
+                    >
+                        <svg
+                            width="15"
+                            height="15"
+                            viewBox="0 0 15 15"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.6"
+                            stroke-linecap="round"
+                        >
+                            <circle cx="6" cy="6" r="4.25" />
+                            <line x1="3.8" y1="6" x2="8.2" y2="6" />
+                            <line x1="10" y1="10" x2="14" y2="14" />
+                        </svg>
+                    </button>
+                    <select
+                        id="zoom-select"
+                        class="pdf-zoom-select"
+                        title="Zoom level"
+                    >
+                        <option value="fit">Fit Width</option>
+                        <option value="0.5">50%</option>
+                        <option value="0.75">75%</option>
+                        <option value="1.0">100%</option>
+                        <option value="1.25">125%</option>
+                        <option value="1.5">150%</option>
+                        <option value="2.0">200%</option>
+                    </select>
+                    <button
+                        id="zoom-in"
+                        class="pdf-tb-btn pdf-tb-btn--icon"
+                        title="Zoom in"
+                    >
+                        <svg
+                            width="15"
+                            height="15"
+                            viewBox="0 0 15 15"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.6"
+                            stroke-linecap="round"
+                        >
+                            <circle cx="6" cy="6" r="4.25" />
+                            <line x1="3.8" y1="6" x2="8.2" y2="6" />
+                            <line x1="6" y1="3.8" x2="6" y2="8.2" />
+                            <line x1="10" y1="10" x2="14" y2="14" />
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="pdf-tb-sep"></div>
+
+                <!-- Page navigation -->
+                <div class="pdf-tb-group">
+                    <button
+                        id="prev-page"
+                        class="pdf-tb-btn pdf-tb-btn--icon"
+                        title="Previous page"
+                    >
+                        <svg
+                            width="15"
+                            height="15"
+                            viewBox="0 0 15 15"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+                            <polyline points="9.5,2.5 4.5,7.5 9.5,12.5" />
+                        </svg>
+                    </button>
+                    <div class="pdf-page-display">
+                        <input
+                            id="page-input"
+                            class="pdf-page-input"
+                            type="number"
+                            min="1"
+                            value="1"
+                            aria-label="Current page"
+                        />
+                        <span class="pdf-page-sep">/</span>
+                        <span id="page-count" class="pdf-page-total">—</span>
+                    </div>
+                    <button
+                        id="next-page"
+                        class="pdf-tb-btn pdf-tb-btn--icon"
+                        title="Next page"
+                    >
+                        <svg
+                            width="15"
+                            height="15"
+                            viewBox="0 0 15 15"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+                            <polyline points="5.5,2.5 10.5,7.5 5.5,12.5" />
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="pdf-tb-sep"></div>
+
+                <!-- View mode toggle -->
+                <div class="pdf-seg" role="group" aria-label="View mode">
+                    <button
+                        id="view-continuous"
+                        class="pdf-seg-btn pdf-seg-btn--active"
+                        title="Continuous scroll"
+                    >
+                        <svg
+                            width="13"
+                            height="13"
+                            viewBox="0 0 13 13"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.5"
+                        >
+                            <rect
+                                x="1"
+                                y="1"
+                                width="11"
+                                height="4.5"
+                                rx="0.5"
+                            />
+                            <rect
+                                x="1"
+                                y="7.5"
+                                width="11"
+                                height="4.5"
+                                rx="0.5"
+                            />
+                        </svg>
+                        Scroll
+                    </button>
+                    <button
+                        id="view-single"
+                        class="pdf-seg-btn"
+                        title="Single page"
+                    >
+                        <svg
+                            width="13"
+                            height="13"
+                            viewBox="0 0 13 13"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.5"
+                        >
+                            <rect
+                                x="1.5"
+                                y="1.5"
+                                width="10"
+                                height="10"
+                                rx="0.5"
+                            />
+                        </svg>
+                        Page
+                    </button>
+                </div>
+
+                <!-- Push actions to right -->
+                <div class="pdf-tb-spacer"></div>
+
+                <!-- Actions -->
+                <div class="pdf-tb-group">
+                    <a
+                        href="{{ .Params.pdf_url | absURL }}"
+                        class="pdf-tb-btn pdf-tb-btn--labeled"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        title="Open in new tab to print"
+                    >
+                        <svg
+                            width="14"
+                            height="14"
+                            viewBox="0 0 14 14"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+                            <rect x="3" y="1" width="8" height="3.5" />
+                            <path
+                                d="M3 4.5H1.5A0.5 0.5 0 001 5v5h3V8h6v2h3V5a0.5 0.5 0 00-.5-.5H10"
+                            />
+                            <rect x="3" y="8" width="8" height="5" />
+                            <line x1="4.5" y1="10" x2="9.5" y2="10" />
+                            <line x1="4.5" y1="11.5" x2="7.5" y2="11.5" />
+                        </svg>
+                        Print
+                    </a>
+                    <button
+                        id="pdf-fullscreen"
+                        class="pdf-tb-btn pdf-tb-btn--icon"
+                        title="Toggle fullscreen"
+                    >
+                        <svg
+                            id="icon-expand"
+                            width="14"
+                            height="14"
+                            viewBox="0 0 14 14"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.5"
+                            stroke
+-linecap="round"
+                            stroke-linejoin="round"
+                        >
+                            <polyline points="1,5 1,1 5,1" />
+                            <polyline points="9,1 13,1 13,5" />
+                            <polyline points="13,9 13,13 9,13" />
+                            <polyline points="5,13 1,13 1,9" />
+                        </svg>
+                        <svg
+                            id="icon-compress"
+                            width="14"
+                            height="14"
+                            viewBox="0 0 14 14"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            style="display: none"
+                        >
+                            <polyline points="5,1 5,5 1,5" />
+                            <polyline points="9,5 13,5 13,1" />
+                            <polyline points="13,9 9,9 9,13" />
+                            <polyline points="5,9 1,9 1,13" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <!-- /.pdf-toolbar -->
+
+            <div id="pdf-pages" class="pdf-pages">
+                <div class="pdf-loading">
+                    <svg
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                    >
+                        <path
+                            d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"
+                            opacity="0.5"
+                        />
+                    </svg>
+                    Loading document&#8230;
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            "use strict";
+
+            {{ if hugo.IsProduction }}
+                const pdfUrl = "{{ .Params.pdf_url | absURL }}";
+            {{ else }}
+                const pdfUrl = {{ printf "https://d156pv0y1gr4h3.cloudfront.net%s" .Params.pdf_url}};
+            {{ end }}
+
+            pdfjsLib.GlobalWorkerOptions.workerSrc =
+                "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+
+            // ── State ────────────────────────────────────────────────────────────
+            let pdfDoc = null;
+            let currentScale = 1.0;
+            let viewMode = "continuous"; // 'continuous' | 'single'
+            let singlePageNum = 1;
+            const rendering = new Set();
+            const rendered = new Set();
+
+            // ── DOM refs ─────────────────────────────────────────────────────────
+            const viewer = document.getElementById("pdf-viewer");
+            const pagesEl = document.getElementById("pdf-pages");
+            const pageCountEl = document.getElementById("page-count");
+            const pageInput = document.getElementById("page-input");
+            const zoomSelect = document.getElementById("zoom-select");
+            const zoomInBtn = document.getElementById("zoom-in");
+            const zoomOutBtn = document.getElementById("zoom-out");
+            const prevPageBtn = document.getElementById("prev-page");
+            const nextPageBtn = document.getElementById("next-page");
+            const fullscreenBtn = document.getElementById("pdf-fullscreen");
+            const contBtn = document.getElementById("view-continuous");
+            const singleBtn = document.getElementById("view-single");
+
+            const ZOOM_STEPS = [0.5, 0.75, 1.0, 1.25, 1.5, 2.0];
+
+            // ── Helpers ───────────────────────────────────────────────────────────
+            function fitWidth(page) {
+                const base = page.getViewport({ scale: 1.0 });
+                const available = pagesEl.clientWidth - 48;
+                return Math.max(0.25, available / base.width);
+            }
+
+            function makeWrapper(num, vp) {
+                const w = document.createElement("div");
+                w.className = "pdf-page-wrapper";
+                w.dataset.page = num;
+                w.style.width = vp.width + "px";
+                w.style.height = vp.height + "px";
+                const c = document.createElement("canvas");
+                w.appendChild(c);
+                return w;
+            }
+
+            // ── Render ────────────────────────────────────────────────────────────
+            async function renderPage(num) {
+                if (rendering.has(num) || rendered.has(num)) return;
+                rendering.add(num);
+                const wrapper = pagesEl.querySelector(
+                    `.pdf-page-wrapper[data-page="${num}"]`,
+                );
+                if (!wrapper) {
+                    rendering.delete(num);
+                    return;
+                }
+                try {
+                    const page = await pdfDoc.getPage(num);
+                    const viewport = page.getViewport({ scale: currentScale });
+                    const canvas = wrapper.querySelector("canvas");
+                    canvas.width = viewport.width;
+                    canvas.height = viewport.height;
+                    wrapper.style.width = viewport.width + "px";
+                    wrapper.style.height = viewport.height + "px";
+                    await page.render({
+                        canvasContext: canvas.getContext("2d"),
+                        viewport,
+                    }).promise;
+                    rendered.add(num);
+                    canvas.classList.add("pdf-canvas-ready");
+                } catch (_) {
+                    /* cancelled render — safe to ignore */
+                } finally {
+                    rendering.delete(num);
+                }
+            }
+
+            // ── Continuous mode ───────────────────────────────────────────────────
+            async function buildContinuous() {
+                pageObserver.disconnect();
+                pagesEl.innerHTML = "";
+                rendered.clear();
+                rendering.clear();
+                pagesEl.classList.remove("pdf-pages--single");
+
+                const first = await pdfDoc.getPage(1);
+                const vp = first.getViewport({ scale: currentScale });
+
+                for (let i = 1; i <= pdfDoc.numPages; i++) {
+                    const w = makeWrapper(i, vp);
+                    pagesEl.appendChild(w);
+                    pageObserver.observe(w);
+                }
+                updateNavBtns();
+            }
+
+            const pageObserver = new IntersectionObserver(
+                (entries) => {
+                    entries.forEach((entry) => {
+                        if (!entry.isIntersecting) return;
+                        const n = parseInt(entry.target.dataset.page, 10);
+                        renderPage(n);
+                        if (n > 1) renderPage(n - 1);
+                        if (n < pdfDoc.numPages) renderPage(n + 1);
+                        if (entry.intersectionRatio >= 0.4) {
+                            pageInput.value = n;
+                            singlePageNum = n;
+                        }
+                    });
+                },
+                {
+                    root: pagesEl,
+                    rootMargin: "400px 0px",
+                    threshold: [0.1, 0.4],
+                },
+            );
+
+            // ── Single-page mode ──────────────────────────────────────────────────
+            async function buildSingle(num) {
+                pageObserver.disconnect();
+                pagesEl.innerHTML = "";
+                rendered.clear();
+                rendering.clear();
+                pagesEl.classList.add("pdf-pages--single");
+
+                singlePageNum = Math.max(1, Math.min(num, pdfDoc.numPages));
+                pageInput.value = singlePageNum;
+
+                const page = await pdfDoc.getPage(singlePageNum);
+                const vp = page.getViewport({ scale: currentScale });
+                const w = makeWrapper(singlePageNum, vp);
+                pagesEl.appendChild(w);
+                await renderPage(singlePageNum);
+                updateNavBtns();
+            }
+
+            function updateNavBtns() {
+                const cur = parseInt(pageInput.value, 10) || 1;
+                prevPageBtn.disabled = cur <= 1;
+                nextPageBtn.disabled = cur >= pdfDoc.numPages;
+            }
+
+            // ── Switch view mode ──────────────────────────────────────────────────
+            function switchView(mode) {
+                viewMode = mode;
+                contBtn.classList.toggle(
+                    "pdf-seg-btn--active",
+                    mode === "continuous",
+                );
+                singleBtn.classList.toggle(
+                    "pdf-seg-btn--active",
+                    mode === "single",
+                );
+                if (mode === "continuous") {
+                    buildContinuous();
+                } else {
+                    buildSingle(parseInt(pageInput.value, 10) || 1);
+                }
+            }
+
+            contBtn.addEventListener("click", () => switchView("continuous"));
+            singleBtn.addEventListener("click", () => switchView("single"));
+
+            // ── Zoom ──────────────────────────────────────────────────────────────
+            function applyZoom(newScale) {
+                currentScale = newScale;
+                viewMode === "single"
+                    ? buildSingle(singlePageNum)
+                    : buildContinuous();
+            }
+
+            function syncZoomSelect() {
+                const snap = ZOOM_STEPS.reduce((a, b) =>
+                    Math.abs(b - currentScale) < Math.abs(a - currentScale)
+                        ? b
+                        : a,
+                );
+                zoomSelect.value =
+                    Math.abs(snap - currentScale) < 0.01 ? snap : "fit";
+            }
+
+            zoomInBtn.addEventListener("click", () => {
+                const bigger = ZOOM_STEPS.filter(
+                    (s) => s > currentScale + 0.01,
+                );
+                if (bigger.length) {
+                    applyZoom(bigger[0]);
+                    syncZoomSelect();
+                }
+            });
+
+            zoomOutBtn.addEventListener("click", () => {
+                const smaller = ZOOM_STEPS.filter(
+                    (s) => s < currentScale - 0.01,
+                );
+                if (smaller.length) {
+                    applyZoom(smaller[smaller.length - 1]);
+                    syncZoomSelect();
+                }
+            });
+
+            zoomSelect.addEventListener("change", () => {
+                if (zoomSelect.value === "fit") {
+                    pdfDoc.getPage(1).then((p) => applyZoom(fitWidth(p)));
+                } else {
+                    applyZoom(parseFloat(zoomSelect.value));
+                }
+            });
+
+            // ── Page navigation ───────────────────────────────────────────────────
+            function jumpTo(n) {
+                n = Math.max(1, Math.min(n || 1, pdfDoc.numPages));
+                if (viewMode === "single") {
+                    buildSingle(n);
+                } else {
+                    pageInput.value = n;
+                    singlePageNum = n;
+                    const el = pagesEl.querySelector(
+                        `.pdf-page-wrapper[data-page="${n}"]`,
+                    );
+                    if (el)
+                        el.scrollIntoView({
+                            behavior: "smooth",
+                            block: "start",
+                        });
+                    updateNavBtns();
+                }
+            }
+
+            prevPageBtn.addEventListener("click", () =>
+                jumpTo((parseInt(pageInput.value, 10) || 1) - 1),
+            );
+            nextPageBtn.addEventListener("click", () =>
+                jumpTo((parseInt(pageInput.value, 10) || 1) + 1),
+            );
+            pageInput.addEventListener("keydown", (e) => {
+                if (e.key === "Enter") jumpTo(parseInt(pageInput.value, 10));
+            });
+            pageInput.addEventListener("blur", () =>
+                jumpTo(parseInt(pageInput.value, 10)),
+            );
+
+            // Arrow key navigation in single-page mode
+            document.addEventListener("keydown", (e) => {
+                if (viewMode !== "single") return;
+                if (e.target.tagName === "INPUT") return;
+                if (e.key === "ArrowRight" || e.key === "ArrowDown")
+                    jumpTo(singlePageNum + 1);
+                if (e.key === "ArrowLeft" || e.key === "ArrowUp")
+                    jumpTo(singlePageNum - 1);
+            });
+
+            // ── Fullscreen ────────────────────────────────────────────────────────
+            fullscreenBtn.addEventListener("click", () => {
+                if (!document.fullscreenElement) {
+                    viewer.requestFullscreen().catch(() => {});
+                } else {
+                    document.exitFullscreen();
+                }
+            });
+
+            document.addEventListener("fullscreenchange", () => {
+                const isFS = !!document.fullscreenElement;
+                document.getElementById("icon-expand").style.display = isFS
+                    ? "none"
+                    : "";
+                document.getElementById("icon-compress").style.display = isFS
+                    ? ""
+                    : "none";
+                if (zoomSelect.value === "fit") {
+                    pdfDoc.getPage(1).then((p) => {
+                        currentScale = fitWidth(p);
+                        viewMode === "single"
+                            ? buildSingle(singlePageNum)
+                            : buildContinuous();
+                    });
+                }
+            });
+
+            // ── Init ──────────────────────────────────────────────────────────────
+            pdfjsLib
+                .getDocument(pdfUrl)
+                .promise.then(async (doc) => {
+                    pdfDoc = doc;
+                    pageCountEl.textContent = doc.numPages;
+                    pageInput.max = doc.numPages;
+
+                    const firstPage = await doc.getPage(1);
+                    currentScale = fitWidth(firstPage);
+                    zoomSelect.value = "fit";
+
+                    await buildContinuous();
+                })
+                .catch((err) => {
+                    pagesEl.innerHTML = `<div class="pdf-error">Unable to load document.<br><small>${err.message}</small></div>`;
+                });
+        })();
+    </script>
+    {{ end }}
+</div>
+{{ end }}

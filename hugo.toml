@@ -1,0 +1,31 @@
+baseURL = 'https://d156pv0y1gr4h3.cloudfront.net/'
+# TODO: languageCode is depreceated, use locale
+languageCode = 'en-us'
+title = 'Journal of the Ancient Near Eastern Society'
+relativeURLs = true
+uglyURLs = true
+
+[params]
+  issn = "0010-2016"
+  description = "Journal of the Ancient Near Eastern Society"
+
+[menus]
+[[menus.main]]
+name = "For Authors"
+pageRef = "/for-authors/"
+weight = 10
+
+[[menus.main]]
+name = "Editorial Board"
+pageRef = "/editorial-board/"
+weight = 20
+
+[[menus.main]]
+name = "About"
+pageRef = "/about/"
+weight = 30
+
+[[menus.main]]
+name = "Volumes"
+pageRef = "/volumes/"
+weight = 40
