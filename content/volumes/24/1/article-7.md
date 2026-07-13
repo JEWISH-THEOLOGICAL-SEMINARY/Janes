@@ -5,5 +5,4 @@ date: "1996-01-01"
 hero_image: "/images/clay_tablet_hero.png"
 pdf_url: "https://d156pv0y1gr4h3.cloudfront.net/pdfs/vol24/2413-moses-and-magic-notes-on-the-book-of-exodus.pdf"
 weight: 2
-tags: ["Ancient Near East"]
 ---

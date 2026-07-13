@@ -5,5 +5,4 @@ date: "1998-01-01"
 hero_image: "/images/clay_tablet_hero.png"
 pdf_url: "https://d156pv0y1gr4h3.cloudfront.net/pdfs/vol26/2414-on-the-meaning-of-the-term-melek-ashur-the-king-of-assyria-in-ezra-6-22.pdf"
 weight: 2
-tags: ["Ancient Near East"]
 ---

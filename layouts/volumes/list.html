@@ -86,9 +86,6 @@
           <a href="{{ .RelPermalink }}">{{ .Title }}</a>
         </h4>
         <p class="article-author">{{ .Params.author }}</p>
-        <div class="article-meta-tags">
-          {{ range .Params.tags }}<span class="tag">{{ . }}</span>{{ end }}
-        </div>
       </article>
       {{ end }} 
     {{/* ── Volumes or Issues (shown on /volumes/ or a volume page) ── */}} 

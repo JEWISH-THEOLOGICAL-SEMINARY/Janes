@@ -5,5 +5,4 @@ date: "1976-01-01"
 hero_image: "/images/clay_tablet_hero.png"
 pdf_url: "https://d156pv0y1gr4h3.cloudfront.net/pdfs/vol8/2254-a-suppliant-surprised-cta-16-i-41b-53a.pdf"
 weight: 2
-tags: ["Ancient Near East"]
 ---
