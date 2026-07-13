@@ -1,9 +1,9 @@
 ---
-title: "Review: E. Reiner, A Linguistic Analysis of Akkadian"
-author: "Dalia Matison"
+title: "The Three Aleph’s in Ugaritic"
+author: "David Marcus"
 date: "1968-01-01"
 hero_image: "/images/clay_tablet_hero.png"
-pdf_url: "/pdfs/vol1_1/2226-review-e-reiner-a-linguistic-analysis-of-akkadian.pdf"
+pdf_url: "https://d156pv0y1gr4h3.cloudfront.net/pdfs/vol1/2225-the-three-aleph-s-in-ugaritic.pdf"
 views: "0"
 downloads: "0"
 tags: ["Ancient Near East"]

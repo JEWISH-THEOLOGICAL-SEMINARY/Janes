@@ -1,9 +1,9 @@
 ---
-title: "Kidnapping the Gods: Assyrian Cultic Despoliation and Aniconism in Isaiah 10:5-11"
-author: "Jessie DeGrado"
+title: "The Last Chapter in the Book of Chronicles (2 Chronicles 36): A Literary Analysis"
+author: "Itzhak Amar"
 date: "2021-12-01"
 hero_image: "/images/clay_tablet_hero.png"
-pdf_url: "/pdfs/vol35/32963-kidnapping-the-gods-assyrian-cultic-despoliation-and-aniconism-in-isaiah-10-5-11.pdf"
+pdf_url: "https://d156pv0y1gr4h3.cloudfront.net/pdfs/vol35/32962-the-last-chapter-in-the-book-of-chronicles-2-chronicles-36-a-literary-analysis.pdf"
 views: "0"
 downloads: "0"
 tags: ["Ancient Near East"]

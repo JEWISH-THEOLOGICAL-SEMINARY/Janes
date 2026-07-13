@@ -3,7 +3,7 @@ title: "A Late Babylonian Tablet with Concentric Circles from the University Mus
 author: "Wayne Horowitz"
 date: "2006-01-01"
 hero_image: "/images/clay_tablet_hero.png"
-pdf_url: "/pdfs/vol30/2449-a-late-babylonian-tablet-with-concentric-circles-from-the-university-museum-cbs-1766.pdf"
+pdf_url: "https://d156pv0y1gr4h3.cloudfront.net/pdfs/vol30/2449-a-late-babylonian-tablet-with-concentric-circles-from-the-university-museum-cbs-1766.pdf"
 views: "0"
 downloads: "0"
 tags: ["Ancient Near East"]
