@@ -517,6 +517,30 @@ h6 {
 .article-hero .meta {
     color: #cccccc;
     font-size: 1rem;
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+    font-family: var(--font-body);
+}
+
+.article-hero .article-issue {
+    color: #fff;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.45);
+    padding-bottom: 1px;
+}
+
+.article-hero .article-issue:hover {
+    color: #fff;
+    border-bottom-color: #fff;
+    text-decoration: none;
+}
+
+.article-hero .article-year {
+    letter-spacing: 0.08em;
+    color: rgba(255, 255, 255, 0.75);
 }
 
 .hero-tag {

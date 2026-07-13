@@ -8,9 +8,17 @@
     <div class="container hero-content-inner">
         <h1>{{ .Title }}</h1>
         <p class="author">{{ .Params.author }}</p>
-        <p class="meta">
-            <span class="issn">ISSN: {{ .Site.Params.issn }}</span>
-        </p>
+        {{/* .Parent is the issue, .Parent.Parent the volume. */}}
+        {{ with .Parent }}
+            <p class="meta">
+                <a class="article-issue" href="{{ .RelPermalink }}">
+                    {{ with .Parent }}{{ .Title }}, {{ end }}{{ .Title }}
+                </a>
+                {{ with .Params.year }}
+                    <span class="article-year">{{ . }}</span>
+                {{ end }}
+            </p>
+        {{ end }}
     </div>
 </header>
 {{ end }} 
