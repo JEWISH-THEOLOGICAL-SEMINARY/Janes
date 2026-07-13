@@ -1,164 +1,161 @@
-{{ define "title" }} 
-  {{ $vName := .Title }} 
-  {{ $iName := .Params.issue }} 
-  {{ $y := .Params.year }} 
+{{/*
+    One template, three kinds of page:
+      /volumes/        → the archive: every volume as a cover plate
+      /volumes/37/     → a volume. Most have exactly one issue, so we render
+                         that issue's contents inline rather than making the
+                         reader click through a list of one. Volumes 1–4 have
+                         two issues and get an issue picker.
+      /volumes/37/1/   → an issue: cover plate + table of contents
+*/}}
 
-  {{ if and .Parent .Parent.Params.year }} 
-    {{ $vName = .Parent.Title }}
-    {{ $iName = .Title }}
-    {{ $y = .Parent.Params.year }} 
-  {{ end }} 
-  {{ if and $vName (ne $vName "Volumes") }}
-    {{ $vNum := replace $vName "Volume " "" }} 
-    {{ if $iName }} 
-      Vol. {{ $vNum }}, 
-      {{ $iName }}, 
-      {{ $y }} | Published by {{ .Site.Title }} 
-    {{ else }} 
-      Vol. {{ $vNum }}, 
-      {{$y }} | Published by {{ .Site.Title }} 
-    {{ end }} 
-  {{ else }} 
-    Volumes | {{ .Site.Title }} 
-  {{ end }} 
-{{ end }} 
+{{ define "title" }}
+    {{- $isIssue := and .Parent .Parent.Params.year -}}
+    {{- if $isIssue -}}
+        {{ .Parent.Title }}, {{ .Title }}, {{ .Parent.Params.year }} | {{ .Site.Title }}
+    {{- else if .Params.year -}}
+        {{ .Title }}, {{ .Params.year }} | {{ .Site.Title }}
+    {{- else -}}
+        The Archive | {{ .Site.Title }}
+    {{- end -}}
+{{ end }}
 
-{{ define "hero" }} 
-  {{ $volumeName := .Title }} 
-  {{ $issueName := .Params.issue }} 
-  {{ $year := .Params.year }} 
-  
-  {{ if and .Parent .Parent.Params.year }} 
-    {{ $volumeName = .Parent.Title }} 
-    {{ $issueName = .Title}} 
-    {{ $year = .Params.year }} 
-  {{ end }} 
-  
-  {{ $heroTitle := "Volumes & Issues" }} 
-  {{ $subText := "Journal of the Ancient Near Eastern Society" }} 
-  
-  {{ if and $volumeName (ne $volumeName "Volumes") }} 
-    {{ $heroTitle = printf "JANES %s" $volumeName }} 
-    {{ $volNum := replace $volumeName "Volume " "" }} 
-    {{ if $issueName }} 
-      {{ $subText = printf "Vol. %s, %s, %v" $volNum $issueName $year }}
-    {{ else }} 
-      {{ $subText = printf "Vol. %s, %v" $volNum $year }} 
-    {{ end }} 
-  {{ end }} 
+{{ define "body" }}
+    {{ $isIssue := and .Parent .Parent.Params.year }}
+    {{ $isVolume := and .Params.year (not $isIssue) }}
 
-  {{ $bgImage := .Params.hero_image | default ("/images/clay_tablet_hero.png" | absURL) }}
+    <main>
+        {{/* ─────────────────────────  THE ARCHIVE  ───────────────────────── */}}
+        {{ if not .Params.year }}
+            <div class="page page-wide">
+                <nav class="crumbs">
+                    <a href="{{ .Site.Home.RelPermalink }}">Home</a> / Archive
+                </nav>
+                <h1 class="page-title">The Archive</h1>
+                <p class="page-lede">
+                    Every volume of the Journal, from its founding issue in 1968 to the
+                    present. Select a volume to view its table of contents.
+                </p>
 
-  <header
-    class="article-hero"
-    style="background-image: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.85)), url('{{ $bgImage }}');"
-  >
-    <div class="container hero-content-inner">
-      <h1>{{ $heroTitle }}</h1>
-      <p class="author" style="margin-top: 5px">{{ $subText }}</p>
-    </div>
-  </header>
-{{ end}}
+                <ul class="plate-grid plate-grid-lg">
+                    {{ range sort .Sections "Params.year" "desc" }}
+                        {{ $num := path.Base .File.Dir }}
+                        {{ $count := 0 }}
+                        {{ range .Sections }}{{ $count = add $count (len .RegularPages) }}{{ end }}
+                        <li>
+                            <a class="plate-link" href="{{ .RelPermalink }}">
+                                {{ partial "cover.html" (dict "number" $num "year" .Params.year) }}
+                                <span class="plate-caption">
+                                    <span>{{ .Params.year }}</span>
+                                    <span class="plate-year">
+                                        {{ $count }} article{{ if ne $count 1 }}s{{ end }}
+                                    </span>
+                                </span>
+                            </a>
+                        </li>
+                    {{ end }}
+                </ul>
+            </div>
 
-{{ define "main" }}
-  <div class="list-page">
-    {{/* ── Issue page: submission guidelines + article list ── */}} 
-    {{ if and .Parent .Parent.Params.year }}
-      <div class="submission-guidelines">
-        <p>
-          The Journal of the Ancient Near Eastern Society welcomes articles on all
-          aspects of the ancient Near East. Manuscripts, which must be typed
-          double-spaced in MS Word according to Journal style, and all illustrations
-          should be submitted electronically, together with a PDF version, to the
-          Editor (<a href="mailto:sholtz@yu.edu">sholtz@yu.edu</a>). Style
-          guidelines may be obtained on request.
-        </p>
-      </div>
-    {{ end }} 
-    
-    {{ .Content }}
+        {{/* ──────────────  A VOLUME WITH SEVERAL ISSUES (vols 1–4)  ────────────── */}}
+        {{ else if and $isVolume (gt (len .Sections) 1) }}
+            {{ $num := path.Base .File.Dir }}
+            <div class="page">
+                <nav class="crumbs">
+                    <a href="{{ .Site.Home.RelPermalink }}">Home</a> /
+                    <a href="{{ .Parent.RelPermalink }}">Archive</a> /
+                    {{ .Title }}
+                </nav>
 
-    <div class="toc-list">
-    {{/* ── Articles (shown when on an issue page) ── */}} 
-      {{ range .RegularPages }}
-      <article class="toc-item">
-        <h4 class="article-title">
-          <a href="{{ .RelPermalink }}">{{ .Title }}</a>
-        </h4>
-        <p class="article-author">{{ .Params.author }}</p>
-      </article>
-      {{ end }} 
-    {{/* ── Volumes or Issues (shown on /volumes/ or a volume page) ── */}} 
-    {{ range .Sections }} 
-      {{ if .Sections }} 
-        {{/* Volume with nested issues*/}}
-        <div class="volume-group">
-          <div class="volume-group-header">
-            <h2 class="volume-group-title">JANES {{ .Title }}</h2>
-            {{ if .Params.year }}
-              <span class="volume-group-year">
-                {{ .Params.year }}
-              </span>
+                {{ partial "issue-head.html" (dict
+                    "page" .
+                    "number" $num
+                    "year" .Params.year
+                    "title" .Title
+                    "meta" (printf "%d issues in this volume" (len .Sections))
+                ) }}
+
+                <ul class="issue-picker">
+                    {{ range .Sections }}
+                        <li>
+                            <a href="{{ .RelPermalink }}">
+                                <span class="issue-picker-title">{{ .Title }}</span>
+                                <span class="issue-picker-meta">
+                                    {{ len .RegularPages }} article{{ if ne (len .RegularPages) 1 }}s{{ end }} &rarr;
+                                </span>
+                            </a>
+                        </li>
+                    {{ end }}
+                </ul>
+            </div>
+
+        {{/* ──────────────────────  AN ISSUE (or a single-issue volume)  ───────────────────── */}}
+        {{ else }}
+            {{/* On a single-issue volume, borrow that issue's articles. */}}
+            {{ $articles := .RegularPages }}
+            {{ $num := path.Base .File.Dir }}
+            {{ $year := .Params.year }}
+            {{ $title := .Title }}
+            {{ $archiveURL := "" }}
+
+            {{ if $isIssue }}
+                {{ $num = path.Base .Parent.File.Dir }}
+                {{ $year = .Parent.Params.year }}
+                {{ $title = printf "%s, %s" .Parent.Title .Title }}
+                {{ $archiveURL = .Parent.Parent.RelPermalink }}
+            {{ else }}
+                {{ $archiveURL = .Parent.RelPermalink }}
+                {{ with .Sections }}
+                    {{ $articles = (index . 0).RegularPages }}
+                {{ end }}
             {{ end }}
-          </div>
-          <div class="issue-list">
-            {{ range .Sections }}
-              <a href="{{ .RelPermalink }}" class="issue-card">
-                <div class="issue-card-body">
-                  <h3 class="issue-card-title">{{ .Title }}</h3>
-                  {{ with .Summary }}
-                    <p class="issue-card-desc">{{ . }}</p>
-                  {{ end }}
-                </div>
-                <span class="issue-card-cta">
-                  Browse contents
-                  <svg
-                    width="14"
-                    height="14"
-                    viewBox="0 0 14 14"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.8"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    aria-hidden="true"
-                  >
-                    <line x1="2" y1="7" x2="12" y2="7" />
-                    <polyline points="8,3 12,7 8,11" />
-                  </svg>
-                </span>
-              </a>
-            {{ end }}
-          </div>
-        </div>
-      {{ else }} 
-      {{/* Single issue (on a volume page with no nested sections) */}}
-        <a href="{{ .RelPermalink }}" class="issue-card">
-          <div class="issue-card-body">
-            <h3 class="issue-card-title">{{ .Title }}</h3>
-            {{ with .Summary }}
-            <p class="issue-card-desc">{{ . }}</p>
-            {{ end }}
-          </div>
-          <span class="issue-card-cta">
-            Browse contents
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 14 14"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.8"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              aria-hidden="true"
-            >
-              <line x1="2" y1="7" x2="12" y2="7" />
-              <polyline points="8,3 12,7 8,11" />
-            </svg>
-          </span>
-        </a>
-      {{ end }} {{ end }}
-  </div>
-</div>
+
+            {{ $count := len $articles }}
+
+            <div class="page page-narrow">
+                <nav class="crumbs">
+                    <a href="{{ .Site.Home.RelPermalink }}">Home</a> /
+                    <a href="{{ $archiveURL }}">Archive</a> /
+                    {{ $title }}
+                </nav>
+
+                {{ partial "issue-head.html" (dict
+                    "page" .
+                    "number" $num
+                    "year" $year
+                    "title" $title
+                    "meta" (printf "%d article%s in this issue" $count (cond (eq $count 1) "" "s"))
+                ) }}
+
+                {{ with .Content }}<div class="page-body">{{ . }}</div>{{ end }}
+
+                <ol class="toc toc-issue">
+                    {{ range $articles }}
+                        <li class="toc-item">
+                            <div class="toc-item-text">
+                                <a class="toc-title" href="{{ .RelPermalink }}">{{ .Title }}</a>
+                                {{ with .Params.author }}
+                                    <p class="toc-author">{{ . }}</p>
+                                {{ end }}
+                            </div>
+                            <a class="btn btn-secondary" href="{{ .RelPermalink }}">
+                                Read PDF
+                            </a>
+                        </li>
+                    {{ end }}
+                </ol>
+
+                <aside class="submission-guidelines">
+                    <p>
+                        The Journal of the Ancient Near Eastern Society welcomes articles
+                        on all aspects of the ancient Near East. Manuscripts, which must
+                        be typed double-spaced in MS Word according to Journal style, and
+                        all illustrations should be submitted electronically, together
+                        with a PDF version, to the Editor
+                        (<a href="mailto:sholtz@yu.edu">sholtz@yu.edu</a>). Style
+                        guidelines may be obtained on request.
+                    </p>
+                </aside>
+            </div>
+        {{ end }}
+    </main>
 {{ end }}

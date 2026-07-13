@@ -1,0 +1,22 @@
+{{/*
+    Brand color for a volume. Pass the volume number (int or string), get back
+    a dict: { name, hex }.
+
+    JANES has always distinguished its volumes with a 5-color cover rotation.
+    Keying off the volume number (rather than the volume's position in a list)
+    keeps a volume's color fixed for good, and gives new volumes their color
+    with no content edit. Hexes are sampled from Artwork/janes_article_*.jpg.
+
+        {{ $c := partialCached "volume-color.html" 37 37 }}   -> cyan, #6D9D9F
+
+    Call it with partialCached, keyed on the number.
+*/}}
+{{ $palette := slice
+    (dict "name" "blue" "hex" "#6381C1")
+    (dict "name" "cyan" "hex" "#6D9D9F")
+    (dict "name" "gold" "hex" "#A59460")
+    (dict "name" "green" "hex" "#7EB679")
+    (dict "name" "red" "hex" "#C46A6A")
+}}
+{{ $n := int . }}
+{{ return index $palette (mod (add (sub $n 1) 5) 5) }}

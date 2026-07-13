@@ -1,0 +1,45 @@
+{{/*
+    A JANES cover plate, composed rather than scanned.
+
+    The print covers are all the same object: a band of the stone carving, a
+    flat brand-color field, the journal's name, and the JTS mark. Building that
+    in markup (instead of shipping the five cover JPGs) keeps the type crisp at
+    any size, costs one shared image, and leaves room to print the volume
+    number on the plate.
+
+    Params: number (int), year (optional), title (optional link title)
+
+        {{ partial "cover.html" (dict "number" 37 "year" 2024) }}
+
+    Sizes itself from its container: .cover is a container-query root and all
+    of its type is in cqw, so the same partial works at 150px and at 400px.
+*/}}
+{{ $n := int .number }}
+{{ $color := partialCached "volume-color.html" $n $n }}
+<div class="plate">
+    <div class="cover" style="--cover-color: {{ $color.hex }}">
+        <img
+            class="cover-band"
+            src="{{ "images/stone_carving_sm.jpg" | relURL }}"
+            alt=""
+            aria-hidden="true"
+            loading="lazy"
+        />
+        <div class="cover-body">
+            <p class="cover-title">
+                <span class="cover-title-lead">The Journal</span>
+                <span class="cover-title-rest">of the Ancient Near Eastern Society</span>
+            </p>
+            <img
+                class="cover-mark"
+                src="{{ "images/jts_mark_white.png" | relURL }}"
+                alt=""
+                aria-hidden="true"
+                loading="lazy"
+            />
+            <p class="cover-vol">
+                Vol.&nbsp;{{ $n }}{{ with .year }} &middot; {{ . }}{{ end }}
+            </p>
+        </div>
+    </div>
+</div>

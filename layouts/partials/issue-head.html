@@ -1,0 +1,16 @@
+{{/*
+    The masthead for a volume or issue page: cover plate alongside the year,
+    title, and a count line.
+
+    Params: number, year, title, meta
+*/}}
+<header class="issue-head">
+    <div class="issue-head-plate">
+        {{ partial "cover.html" (dict "number" .number "year" .year) }}
+    </div>
+    <div class="issue-head-text">
+        <p class="issue-head-year">{{ .year }}</p>
+        <h1 class="issue-head-title">{{ .title }}</h1>
+        <p class="issue-head-meta">{{ .meta }}</p>
+    </div>
+</header>
