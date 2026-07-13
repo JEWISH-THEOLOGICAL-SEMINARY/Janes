@@ -2,11 +2,10 @@
 title: "Editorial Board"
 ---
 
-**Editors**: Edward L. Greenstein, David Marcus  
-**Managing Editor**: Shalom E. Holtz  
-**Associate Editors**: Allan S. Gilbert, Wayne Horowitz, Murray H. Lichtenstein, Karen R. Nemet-Nejat, Holly Pittman, Diane M. Sharon, Daniel C. Snell  
-**Assistant Editors**: Chris Dost, David DeLauro  
+**Editor**: Shalom E. Holtz  
+**Associate Editors**: Allan S. Gilbert, Edward L. Greenstein, Wayne Horowitz, Murray H. Lichtenstein, David Marcus, Karen R. Nemet-Nejat, Holly Pittman, Daniel C. Snell  
+**Assistant Editor and Technical Consultant**: David DeLauro  
 
 ---
 
-Manuscripts should be composed according to the SBL style sheet and sent to the Editors, c/o Ed Greenstein ([greenstein.ed@gmail.com](mailto:greenstein.ed@gmail.com)).
+Manuscripts should be composed according to the SBL style sheet and sent to the Editor, Shalom E. Holtz ([sholtz@yu.edu](mailto:sholtz@yu.edu)).
