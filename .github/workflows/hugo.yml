@@ -2,7 +2,7 @@ name: Build and deploy
 on:
   push:
     branches:
-      - test
+      - main
   workflow_dispatch:
 permissions:
   contents: read
@@ -118,7 +118,6 @@ jobs:
           hugo build \
             --gc \
             --minify \
-            --baseURL "https://d156pv0y1gr4h3.cloudfront.net/" \
             --cacheDir "${{ runner.temp }}/.cache/hugo"
 
       - name: Cache save
