@@ -200,7 +200,7 @@
                          the click handler upgrades it to a real save. */}}
                     <a
                         id="pdf-download"
-                        href="{{ .Params.pdf_url | absURL }}"
+                        href="{{ .Params.pdf_url }}"
                         class="pdf-tb-btn pdf-tb-btn--labeled"
                         download="{{ path.Base .Params.pdf_url }}"
                         title="Download PDF"
@@ -222,7 +222,7 @@
                         Download
                     </a>
                     <a
-                        href="{{ .Params.pdf_url | absURL }}"
+                        href="{{ .Params.pdf_url }}"
                         class="pdf-tb-btn pdf-tb-btn--labeled"
                         target="_blank"
                         rel="noopener noreferrer"
@@ -318,11 +318,10 @@
         (function () {
             "use strict";
 
-            {{ if hugo.IsProduction }}
-                const pdfUrl = "{{ .Params.pdf_url | absURL }}";
-            {{ else }}
-                const pdfUrl = {{ printf "https://d156pv0y1gr4h3.cloudfront.net%s" .Params.pdf_url}};
-            {{ end }}
+            {{/* pdf_url is always a full CloudFront URL, so use it as-is. The
+                 old dev branch prefixed the CloudFront host onto a URL that
+                 already had one, which broke every PDF under `hugo server`. */}}
+            const pdfUrl = "{{ .Params.pdf_url }}";
 
             pdfjsLib.GlobalWorkerOptions.workerSrc =
                 "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
