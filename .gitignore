@@ -28,5 +28,11 @@ go.work.sum
 .env
 
 # Editor/IDE
-# .idea/
-# .vscode/
+.idea/
+.vscode/
+
+# ignore Hugo build output directory
+/public/
+
+# Hugo build lock file
+.hugo_build.lock

@@ -1,9 +1,17 @@
-baseURL = 'https://d156pv0y1gr4h3.cloudfront.net/'
-# TODO: languageCode is depreceated, use locale
-languageCode = 'en-us'
+baseURL = 'https://janes.jtsa.edu/'
 title = 'Journal of the Ancient Near Eastern Society'
+
 relativeURLs = true
 uglyURLs = true
+
+defaultContentLanguage = 'en'
+
+enableRobotsTXT = true
+
+[languages.en]
+languageName = 'English'
+locale = 'en-US'
+weight = 1
 
 [params]
   issn = "0010-2016"
@@ -29,3 +37,7 @@ weight = 30
 name = "Volumes"
 pageRef = "/volumes/"
 weight = 40
+
+[caches]
+  [caches.images]
+    dir = ':cacheDir/images'
