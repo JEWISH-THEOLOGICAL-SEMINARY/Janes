@@ -4,5 +4,6 @@ author: "JANES Editors"
 date: "2001-01-01"
 hero_image: "/images/clay_tablet_hero.png"
 pdf_url: "https://d156pv0y1gr4h3.cloudfront.net/pdfs/vol28/2524-janes-28-front-matter.pdf"
+weight: 1
 tags: ["Ancient Near East"]
 ---

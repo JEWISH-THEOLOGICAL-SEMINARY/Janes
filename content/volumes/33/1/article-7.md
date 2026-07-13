@@ -4,5 +4,6 @@ author: "George Savran"
 date: "2018-09-01"
 hero_image: "/images/clay_tablet_hero.png"
 pdf_url: "https://d156pv0y1gr4h3.cloudfront.net/pdfs/vol33/4368-qohelet-12-1-7-intimations-of-mortality.pdf"
+weight: 2
 tags: ["Ancient Near East"]
 ---
