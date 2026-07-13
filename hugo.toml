@@ -38,6 +38,11 @@ name = "Volumes"
 pageRef = "/volumes/"
 weight = 40
 
+[[menus.main]]
+name = "Author Index"
+pageRef = "/authors/"
+weight = 50
+
 [caches]
   [caches.images]
     dir = ':cacheDir/images'

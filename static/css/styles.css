@@ -248,6 +248,22 @@ h6 {
     font-family: var(--font-serif);
 }
 
+.author-article-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.author-article-list li {
+    padding: 6px 0;
+}
+
+.author-article-list .article-author {
+    display: block;
+    margin: 0;
+    font-size: 0.9rem;
+}
+
 .tag {
     display: inline-block;
     background: #eee;
