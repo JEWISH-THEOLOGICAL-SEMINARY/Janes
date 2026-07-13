@@ -196,6 +196,31 @@
 
                 <!-- Actions -->
                 <div class="pdf-tb-group">
+                    {{/* Falls back to a plain link until the document loads;
+                         the click handler upgrades it to a real save. */}}
+                    <a
+                        id="pdf-download"
+                        href="{{ .Params.pdf_url | absURL }}"
+                        class="pdf-tb-btn pdf-tb-btn--labeled"
+                        download="{{ path.Base .Params.pdf_url }}"
+                        title="Download PDF"
+                    >
+                        <svg
+                            width="14"
+                            height="14"
+                            viewBox="0 0 14 14"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+                            <path d="M7 1v8" />
+                            <polyline points="4,6 7,9 10,6" />
+                            <path d="M1.5 10.5v1.5a0.5 0.5 0 00.5.5h10a0.5 0.5 0 00.5-.5v-1.5" />
+                        </svg>
+                        Download
+                    </a>
                     <a
                         href="{{ .Params.pdf_url | absURL }}"
                         class="pdf-tb-btn pdf-tb-btn--labeled"
@@ -323,6 +348,27 @@
             const fullscreenBtn = document.getElementById("pdf-fullscreen");
             const contBtn = document.getElementById("view-continuous");
             const singleBtn = document.getElementById("view-single");
+            const downloadBtn = document.getElementById("pdf-download");
+
+            /* The PDF lives on CloudFront, a different origin, so browsers
+               ignore the anchor's download attribute and would just navigate to
+               it. PDF.js has already fetched the bytes, so save those instead --
+               no second request, and it works even while the CloudFront CORS
+               caching bug is outstanding. The href stays as a fallback for a
+               click landing before the document has loaded. */
+            downloadBtn.addEventListener("click", async (e) => {
+                if (!pdfDoc) return; // let the plain href handle it
+                e.preventDefault();
+                const data = await pdfDoc.getData();
+                const url = URL.createObjectURL(
+                    new Blob([data], { type: "application/pdf" }),
+                );
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = downloadBtn.getAttribute("download");
+                a.click();
+                URL.revokeObjectURL(url);
+            });
 
             const ZOOM_STEPS = [0.5, 0.75, 1.0, 1.25, 1.5, 2.0];
 
