@@ -9,11 +9,6 @@
         <h1>{{ .Title }}</h1>
         <p class="author">{{ .Params.author }}</p>
         <p class="meta">
-            {{ if .Params.views }}<span>Views: {{ .Params.views }} | </span>{{
-            end }} {{ if .Params.downloads }}<span
-                >Downloads: {{ .Params.downloads }}</span
-            >{{ end }}
-            <br />
             <span class="issn">ISSN: {{ .Site.Params.issn }}</span>
         </p>
         <div class="tags" style="margin-top: 15px">

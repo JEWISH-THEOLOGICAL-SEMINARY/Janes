@@ -4,7 +4,5 @@ author: "Matthew J. Suriano, Itzhaq Shai & 1 more"
 date: "2021-12-01"
 hero_image: "/images/clay_tablet_hero.png"
 pdf_url: "https://d156pv0y1gr4h3.cloudfront.net/pdfs/vol35/32973-in-search-of-libnah.pdf"
-views: "0"
-downloads: "0"
 tags: ["Ancient Near East"]
 ---
