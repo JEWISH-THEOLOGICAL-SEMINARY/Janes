@@ -8,6 +8,6 @@ The *Journal of the Ancient Near Eastern Society (JANES)* welcomes original scho
 
 Manuscripts should be composed according to the SBL style sheet and sent to the Editors, c/o  **Dr. Shalom Holtz** at [sholtz@yu.edu](mailto:sholtz@yu.edu). 
 
-*Style guidelines may be obtained on request.*
+For full formatting requirements — fonts, footnotes and citations, Hebrew and Greek, tables and figures, and a pre-submission checklist — see the [**Submission Guidelines**]({{< ref "guidelines.md" >}}).
 
 ---
