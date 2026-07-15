@@ -1288,12 +1288,6 @@
     - volume: "JANES 22 (1993)"
       title: "UET 6, 402: Persuasion in the Plain Style"
       pdf_url: "https://d156pv0y1gr4h3.cloudfront.net/pdfs/vol22/2393-uet-6-402-persuasion-in-the-plain-style.pdf"
-- lastname: "more"
-  firstname: "1"
-  articles:
-    - volume: "JANES 35 (2021)"
-      title: "In Search of Libnah"
-      pdf_url: "https://d156pv0y1gr4h3.cloudfront.net/pdfs/vol35/32973-in-search-of-libnah.pdf"
 - lastname: "Morgenstern"
   firstname: "Matthew"
   articles:
@@ -1765,6 +1759,12 @@
     - volume: "JANES 5 (1973)"
       title: "Mysticism and Negative Presence"
       pdf_url: "https://d156pv0y1gr4h3.cloudfront.net/pdfs/vol5/2172-mysticism-and-negative-presence.pdf"
+- lastname: "Uziel"
+  firstname: "Joe"
+  articles:
+    - volume: "JANES 35 (2021)"
+      title: "In Search of Libnah"
+      pdf_url: "https://d156pv0y1gr4h3.cloudfront.net/pdfs/vol35/32973-in-search-of-libnah.pdf"
 - lastname: "Vainstub"
   firstname: "Daniel"
   articles:
