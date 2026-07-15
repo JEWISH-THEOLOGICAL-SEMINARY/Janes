@@ -1,12 +1,20 @@
 baseURL = 'https://janes.jtsa.edu/'
 title = 'Journal of the Ancient Near Eastern Society'
 
-relativeURLs = true
-uglyURLs = true
+relativeURLs = false
+uglyURLs = false
 
 defaultContentLanguage = 'en'
 
 enableRobotsTXT = true
+
+# Allow raw HTML in Markdown content (used by the Submission Guidelines page for
+# the themed callout/instruction-box components). Content here is all
+# hand-authored, so this is safe.
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
 
 [languages.en]
 languageName = 'English'
