@@ -37,6 +37,9 @@
     - volume: "JANES 35 (2021)"
       title: "The Last Chapter in the Book of Chronicles (2 Chronicles 36): A Literary Analysis"
       pdf_url: "https://d156pv0y1gr4h3.cloudfront.net/pdfs/vol35/32962-the-last-chapter-in-the-book-of-chronicles-2-chronicles-36-a-literary-analysis.pdf"
+    - volume: "JANES 38 (2026)"
+      title: "Psalm 45 and the Achaemenid View of the Ideal King"
+      pdf_url: "https://d156pv0y1gr4h3.cloudfront.net/pdfs/vol38/01-JANES-v38-Amar.pdf"
 - lastname: "Anthony"
   firstname: "David W."
   articles:
@@ -741,7 +744,7 @@
       pdf_url: "https://d156pv0y1gr4h3.cloudfront.net/pdfs/vol34/19447-theophoric-elements-in-names-on-hebrew-bullae-from-the-kaufman-collection-a-comparative-study.pdf"
     - volume: "JANES 37 (2025)"
       title: "Clan Names of Returnees to Judah in Ezra2//Nehemiah 7: An Analysis of the Onomastic Reality Behind the Names"
-      pdf_url: "https://d156pv0y1gr4h3.cloudfront.net/pdfs/vol37/128367-clan-names-of-returnees-to-judah-in-ezra2-nehemiah-7-an-analysis-of-the-onomastic-reality-behind-the-names.pdf"
+      pdf_url: "https://d156pv0y1gr4h3.cloudfront.net/pdfs/vol37/128367-clan-names-of-returnees-to-judah-in-ezra2-nehemiah-7-an-analysis-of-the-onomastic-reality-behind-the-names-r1.pdf"
 - lastname: "Gossage"
   firstname: "CJ"
   articles:
@@ -973,6 +976,9 @@
     - volume: "JANES 36 (2023)"
       title: "The Story of Dinah (Gen 34) – A Reading in Light of Babylonian Marriage Agreements from the First Millenium BCE"
       pdf_url: "https://d156pv0y1gr4h3.cloudfront.net/pdfs/vol36/75252-the-story-of-dinah-gen-34-a-reading-in-light-of-babylonian-marriage-agreements-from-the-first-millenium-bce.pdf"
+    - volume: "JANES 38 (2026)"
+      title: "Maternal Child Abandonment in the Ancient Near East and Hebrew Bible"
+      pdf_url: "https://d156pv0y1gr4h3.cloudfront.net/pdfs/vol38/02-JANES-v38-Jacobsen.pdf"
 - lastname: "Jacobsen"
   firstname: "Thorkild"
   articles:
@@ -1002,7 +1008,10 @@
       pdf_url: "https://d156pv0y1gr4h3.cloudfront.net/pdfs/vol29/2441-do-the-finite-verbal-forms-in-biblical-hebrew-express-aspect.pdf"
     - volume: "JANES 37 (2025)"
       title: "Delocutive Nouns in Biblical Hebrew"
-      pdf_url: "https://d156pv0y1gr4h3.cloudfront.net/pdfs/vol37/128368-delocutive-nouns-in-biblical-hebrew.pdf"
+      pdf_url: "https://d156pv0y1gr4h3.cloudfront.net/pdfs/vol37/128368-delocutive-nouns-in-biblical-hebrew-r1.pdf"
+    - volume: "JANES 38 (2026)"
+      title: "On the History of Hebrew after the Fall of Jerusalem"
+      pdf_url: "https://d156pv0y1gr4h3.cloudfront.net/pdfs/vol38/03-JANES-v38-Joosten.pdf"
 - lastname: "Karlovsky"
   firstname: "C. C. Lamberg"
   articles:
@@ -1039,6 +1048,12 @@
     - volume: "JANES 5 (1973)"
       title: "Late-Egyptian Chronology and the Hebrew Monarchy"
       pdf_url: "https://d156pv0y1gr4h3.cloudfront.net/pdfs/vol5/2154-late-egyptian-chronology-and-the-hebrew-monarchy.pdf"
+- lastname: "Kopilovitz"
+  firstname: "Ariel"
+  articles:
+    - volume: "JANES 38 (2026)"
+      title: "Expectations for Restoration among the Judean Exiles in Babylonia During the Exilic Period"
+      pdf_url: "https://d156pv0y1gr4h3.cloudfront.net/pdfs/vol38/04-JANES-v38-Kopilovitz.pdf"
 - lastname: "Kosmala"
   firstname: "Hans"
   articles:
@@ -1579,6 +1594,9 @@
     - volume: "JANES 37 (2025)"
       title: "Iron Age Interpretations of Fossils and Bronze Age Artifacts: A Hypothesis-testing Approach to the Geography of Biblocal Giants"
       pdf_url: "https://d156pv0y1gr4h3.cloudfront.net/pdfs/vol37/128369-iron-age-interpretations-of-fossils-and-bronze-age-artifacts-a-hypothesis-testing-approach-to-the-geography-of-bi.pdf"
+    - volume: "JANES 38 (2026)"
+      title: "Shoshenq I and Biblical Shishak: Alternate Chronologies vs. Radiocarbon Dates"
+      pdf_url: "https://d156pv0y1gr4h3.cloudfront.net/pdfs/vol38/05-JANES-v38-Senter.pdf"
 - lastname: "Shai"
   firstname: "Itzhaq"
   articles:
