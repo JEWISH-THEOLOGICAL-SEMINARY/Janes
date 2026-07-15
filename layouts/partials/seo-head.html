@@ -1,0 +1,94 @@
+{{/*
+    Centralized SEO / discovery metadata for every page. Pulled into
+    <head> by baseof.html. Reads existing front matter only -- no new
+    content fields required.
+
+    Emits, for all pages:
+      - <meta name="description">
+      - <link rel="canonical">
+      - Open Graph + Twitter Card tags
+    And, for article / front-matter pages (any page carrying a pdf_url):
+      - Google Scholar "citation_*" (Highwire Press) tags -- the tags
+        Google Scholar actually indexes on; the single most important
+        discovery channel for an academic journal.
+      - schema.org ScholarlyArticle JSON-LD.
+*/}}
+
+{{/* ── Shared values ──────────────────────────────────────────────── */}}
+{{ $site := .Site.Title }}
+{{ $isArticle := and (isset .Params "pdf_url") (ne (.Params.pdf_url | default "") "") (ne .Kind "home") }}
+{{/* Scholarly citation markup is for real articles only -- not issue
+     front matter / mastheads (front-matter-*.md, credited "JANES Editors"). */}}
+{{ $isScholarly := and $isArticle .File (hasPrefix .File.TranslationBaseName "article-") }}
+
+{{/* Description: explicit front-matter description wins; otherwise a
+     constructed byline for articles; otherwise the site tagline. */}}
+{{ $desc := .Site.Params.description }}
+{{ with .Params.description }}{{ $desc = . }}{{ else }}
+    {{ if $isArticle }}
+        {{ $desc = printf "%s%s — %s." .Title (cond (ne (string .Params.author) "") (printf " by %s" .Params.author) "") $site }}
+    {{ end }}
+{{ end }}
+
+<meta name="description" content="{{ $desc }}" />
+<link rel="canonical" href="{{ .Permalink }}" />
+
+{{/* ── Open Graph / Twitter ───────────────────────────────────────── */}}
+{{ $ogImage := "" }}
+{{ with .Params.hero_image }}{{ $ogImage = . | absURL }}{{ else }}{{ $ogImage = "images/janes_logo_wide.png" | absURL }}{{ end }}
+<meta property="og:site_name" content="{{ $site }}" />
+<meta property="og:title" content="{{ if .IsHome }}{{ $site }}{{ else }}{{ .Title }}{{ end }}" />
+<meta property="og:description" content="{{ $desc }}" />
+<meta property="og:url" content="{{ .Permalink }}" />
+<meta property="og:type" content="{{ cond $isArticle "article" "website" }}" />
+<meta property="og:image" content="{{ $ogImage }}" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="{{ if .IsHome }}{{ $site }}{{ else }}{{ .Title }}{{ end }}" />
+<meta name="twitter:description" content="{{ $desc }}" />
+<meta name="twitter:image" content="{{ $ogImage }}" />
+
+{{/* ── Academic citation metadata (Google Scholar) ────────────────── */}}
+{{ if $isScholarly }}
+    {{/* Volume and issue come from the path /volumes/<vol>/<issue>/<slug>/,
+         the canonical source (the _index.md titles are "Volume 35" prose). */}}
+    {{ $parts := split (strings.TrimPrefix "/volumes/" .RelPermalink) "/" }}
+    {{ $vol := index $parts 0 }}
+    {{ $iss := index $parts 1 }}
+    {{/* Split the byline on comma / ampersand / "and" -- same rule as
+         scripts/build_authors_index.py -- so each author gets its own tag. */}}
+    {{ $authors := slice }}
+    {{ range split (replaceRE `\s*(?:,|&|\band\b)\s*` "|" .Params.author) "|" }}
+        {{ $name := trim . " " }}
+        {{ if and $name (not (findRE `^\d+\s+more$` $name)) }}
+            {{ $authors = $authors | append $name }}
+        {{ end }}
+    {{ end }}
+
+    <meta name="citation_title" content="{{ .Title }}" />
+    {{ range $authors }}<meta name="citation_author" content="{{ . }}" />
+    {{ end }}
+    <meta name="citation_journal_title" content="{{ $site }}" />
+    <meta name="citation_journal_abbrev" content="JANES" />
+    {{ with .Site.Params.issn }}<meta name="citation_issn" content="{{ . }}" />{{ end }}
+    {{ with $vol }}<meta name="citation_volume" content="{{ . }}" />{{ end }}
+    {{ with $iss }}<meta name="citation_issue" content="{{ . }}" />{{ end }}
+    {{ with .Date }}<meta name="citation_publication_date" content="{{ .Format "2006/01/02" }}" />{{ end }}
+    <meta name="citation_pdf_url" content="{{ .Params.pdf_url }}" />
+    <meta name="citation_abstract_html_url" content="{{ .Permalink }}" />
+
+    {{/* schema.org structured data for general search engines. */}}
+    <script type="application/ld+json">
+    {{- $ld := dict
+        "@context" "https://schema.org"
+        "@type" "ScholarlyArticle"
+        "headline" .Title
+        "name" .Title
+        "author" (apply $authors "dict" "@type" "Person" "name" ".")
+        "datePublished" (cond (ne (string .Date) "") (.Date.Format "2006-01-02") "")
+        "url" .Permalink
+        "isPartOf" (dict "@type" "PublicationIssue" "issueNumber" $iss "isPartOf" (dict "@type" "PublicationVolume" "volumeNumber" $vol "isPartOf" (dict "@type" "Periodical" "name" $site "issn" .Site.Params.issn)))
+        "publisher" (dict "@type" "Organization" "name" "Jewish Theological Seminary")
+    -}}
+    {{ $ld | jsonify (dict "indent" "  ") | safeJS }}
+    </script>
+{{ end }}

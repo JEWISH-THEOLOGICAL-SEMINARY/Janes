@@ -12,7 +12,7 @@
             <ul class="author-article-list">
                 {{ range .articles }}
                 <li>
-                    <a href="{{ .pdf_url }}" target="_blank" rel="noopener">{{ .title }}</a>
+                    <a href="{{ .url | relLangURL }}">{{ .title }}</a>
                     <span class="article-author">{{ .volume }}</span>
                 </li>
                 {{ end }}

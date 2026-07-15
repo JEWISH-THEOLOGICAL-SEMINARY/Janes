@@ -3,7 +3,8 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>{{ block "title" . }}{{ .Site.Title }}{{ end }}</title>
+        <title>{{ block "title" . }}{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} &middot; {{ .Site.Title }}{{ end }}{{ end }}</title>
+        {{ partial "seo-head.html" . }}
         <link rel="stylesheet" href="{{ "css/styles.css" | relURL }}" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link
